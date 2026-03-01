@@ -19,12 +19,11 @@ func ConectarBanco() (*pgx.Conn, error) {
 	return conn, nil
 }
 
-// ... func CriaTabela continua igual ...
 func CriaTabela(conn *pgx.Conn) error {
 	query := `CREATE TABLE IF NOT EXISTS tarefas(
 		id SERIAL PRIMARY KEY,
 		nome VARCHAR(255) NOT NULL UNIQUE,
-		custo DECIMAL(10, 2) NOT NULL CHECK (custo >= 0),
+		custo DECIMAL(20, 2) NOT NULL CHECK (custo >= 0),
         data_limite DATE NOT NULL,
         ordem_apresentacao INTEGER NOT NULL UNIQUE
 	)`

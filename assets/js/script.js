@@ -26,6 +26,7 @@ async function carregarTarefas() {
 
             const linha = `
                 <tr class="${classeLinha}">
+                    <td>${t.id}</td>
                     <td>${t.ordem_apresentacao}</td>
                     <td>${t.nome}</td>
                     <td>${custoFormatado}</td>
@@ -160,3 +161,9 @@ function mostrarNotificacao(mensagem, tipo = 'sucesso') {
 }
 
 carregarTarefas();
+document.addEventListener('DOMContentLoaded', () => {
+    const modalTarefaEl = document.getElementById('modalTarefa');
+    modalTarefaEl.addEventListener('shown.bs.modal', () => {
+        document.getElementById('nome').focus();
+    });
+});
