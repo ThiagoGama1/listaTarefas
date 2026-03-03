@@ -58,27 +58,37 @@ func (h *TarefasHandler) HandlerIncluirTarefa(c *gin.Context) {
 	}
 
 	var novaTarefa models.Tarefa
+	var valorLimite = 999999999
 	novaTarefa.Nome = input.Nome
 	novaTarefa.Custo = converterCusto(input.Custo)
 	novaTarefa.DataLimite = input.DataLimite
 
+	var erros []string
+
 	if novaTarefa.Nome == "" {
-		c.JSON(http.StatusBadRequest, gin.H{"erro": "O nome da tarefa é obrigatório"})
-		return
+		erros = append(erros, "O nome da tarefa é obrigatório")
+
+	} else if len(novaTarefa.Nome) > 50 {
+		erros = append(erros, "O nome da tarefa deve ter no máximo 50 caracteres")
+
+	} else if data.VerificarNomeExiste(h.Db, novaTarefa.Nome) {
+		erros = append(erros, "O nome da tarefa já existe")
 	}
 	if novaTarefa.Custo < 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"erro": "O custo não pode ser negativo"})
-		return
+		erros = append(erros, "O custo não pode ser negativo")
+
+	} else if novaTarefa.Custo > float64(valorLimite) {
+		erros = append(erros, "O custo da tarefa é muito alto")
 	}
 	if novaTarefa.DataLimite.IsZero() {
-		c.JSON(http.StatusBadRequest, gin.H{"erro": "A data limite é obrigatória"})
+		erros = append(erros, "A data limite é obrigatória")
+	}
+
+	if len(erros) > 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"erro": strings.Join(erros, " | ")})
 		return
 	}
-	verificacao := data.VerificarNomeExiste(h.Db, novaTarefa.Nome)
-	if verificacao == true {
-		c.JSON(http.StatusBadRequest, gin.H{"erro": "nome da tarefa já existe"})
-		return
-	}
+
 	err := data.IncluirTarefa(h.Db, novaTarefa)
 
 	if err != nil {
@@ -106,29 +116,38 @@ func (h *TarefasHandler) HandlerEditarTarefa(c *gin.Context) {
 	}
 
 	var tarefaEditada models.Tarefa
+	var valorLimite = 999999999
 	tarefaEditada.Nome = input.Nome
 	tarefaEditada.Custo = converterCusto(input.Custo)
 	tarefaEditada.DataLimite = input.DataLimite
 
+	var erros []string
+
 	if tarefaEditada.Nome == "" {
-		c.JSON(http.StatusBadRequest, gin.H{"erro": "O nome da tarefa é obrigatório"})
-		return
+		erros = append(erros, "O nome da tarefa é obrigatório")
+
+	} else if len(tarefaEditada.Nome) > 50 {
+		erros = append(erros, "O nome da tarefa deve ter no máximo 50 caracteres")
+
+	} else if data.VerificarNomeEdicao(h.Db, tarefaEditada.Nome, tarefaEditada.Id) {
+		erros = append(erros, "O nome da tarefa já existe")
 	}
 	if tarefaEditada.Custo < 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"erro": "O custo não pode ser negativo"})
-		return
+		erros = append(erros, "O custo não pode ser negativo")
+
+	} else if tarefaEditada.Custo > float64(valorLimite) {
+		erros = append(erros, "O custo da tarefa é muito alto")
 	}
 	if tarefaEditada.DataLimite.IsZero() {
-		c.JSON(http.StatusBadRequest, gin.H{"erro": "A data limite é obrigatória"})
+		erros = append(erros, "A data limite é obrigatória")
+	}
+
+	if len(erros) > 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"erro": strings.Join(erros, " | ")})
 		return
 	}
 	tarefaEditada.Id = id
-	verificacao := data.VerificarNomeEdicao(h.Db, tarefaEditada.Nome, tarefaEditada.Id)
 
-	if verificacao == true {
-		c.JSON(http.StatusBadRequest, gin.H{"erro": "nome da tarefa já existe"})
-		return
-	}
 	err = data.AtualizarTarefa(h.Db, tarefaEditada)
 
 	if err != nil {

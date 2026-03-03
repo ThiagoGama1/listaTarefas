@@ -88,7 +88,10 @@ async function salvarTarefa() {
 
         if (resposta.ok) {
             mostrarNotificacao(idEdicao ? "Tarefa editada com sucesso!" : "Tarefa incluída com sucesso!", "sucesso");
-            setTimeout(() => location.reload(), 1500); //o reload é muito rapido, o toast não tava aparecendo então botei um delay
+            const modalEl = document.getElementById('modalTarefa');
+            const modal = bootstrap.Modal.getInstance(modalEl);
+            modal.hide();
+            carregarTarefas();
         } else {
             const erro = await resposta.json();
             mostrarNotificacao("Erro: " + erro.erro, "erro");
@@ -124,7 +127,7 @@ async function excluirTarefa(id) {
 
         if (resposta.ok) {
             mostrarNotificacao("Tarefa excluída!", "sucesso");
-            setTimeout(() => location.reload(), 1500);
+            carregarTarefas();
         } else {
             const erro = await resposta.json();
             mostrarNotificacao("Erro: " + erro.erro, "erro");
@@ -140,7 +143,7 @@ async function moverTarefa(id, direcao) {
         const resposta = await fetch(`/tarefas/${id}/${direcao}`, { method: 'PUT' });
         if (resposta.ok) {
             mostrarNotificacao("Ordem alterada com sucesso!", "sucesso");
-            setTimeout(() => location.reload(), 1500);
+            carregarTarefas();
         } else {
             const erro = await resposta.json();
             mostrarNotificacao("Erro ao mover: " + (erro.erro || "Desconhecido"), "erro");
