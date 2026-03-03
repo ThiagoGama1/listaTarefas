@@ -63,6 +63,7 @@ func (h *TarefasHandler) HandlerIncluirTarefa(c *gin.Context) {
 	novaTarefa.Custo = converterCusto(input.Custo)
 	novaTarefa.DataLimite = input.DataLimite
 
+	novaTarefa.Nome = strings.TrimSpace(novaTarefa.Nome)
 	var erros []string
 
 	if novaTarefa.Nome == "" {
@@ -78,7 +79,7 @@ func (h *TarefasHandler) HandlerIncluirTarefa(c *gin.Context) {
 		erros = append(erros, "O custo não pode ser negativo")
 
 	} else if novaTarefa.Custo > float64(valorLimite) {
-		erros = append(erros, "O custo da tarefa é muito alto")
+		erros = append(erros, "O custo da tarefa não pode ser maior que R$999.999.999")
 	}
 	if novaTarefa.DataLimite.IsZero() {
 		erros = append(erros, "A data limite é obrigatória")
@@ -118,9 +119,12 @@ func (h *TarefasHandler) HandlerEditarTarefa(c *gin.Context) {
 	var tarefaEditada models.Tarefa
 	var valorLimite = 999999999
 	tarefaEditada.Nome = input.Nome
+	tarefaEditada.Id = id
 	tarefaEditada.Custo = converterCusto(input.Custo)
 	tarefaEditada.DataLimite = input.DataLimite
 
+
+	tarefaEditada.Nome = strings.TrimSpace(tarefaEditada.Nome)
 	var erros []string
 
 	if tarefaEditada.Nome == "" {
@@ -136,7 +140,7 @@ func (h *TarefasHandler) HandlerEditarTarefa(c *gin.Context) {
 		erros = append(erros, "O custo não pode ser negativo")
 
 	} else if tarefaEditada.Custo > float64(valorLimite) {
-		erros = append(erros, "O custo da tarefa é muito alto")
+		erros = append(erros, "O custo da tarefa não pode ser maior que R$999.999.999")
 	}
 	if tarefaEditada.DataLimite.IsZero() {
 		erros = append(erros, "A data limite é obrigatória")
@@ -146,7 +150,7 @@ func (h *TarefasHandler) HandlerEditarTarefa(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"erro": strings.Join(erros, " | ")})
 		return
 	}
-	tarefaEditada.Id = id
+	
 
 	err = data.AtualizarTarefa(h.Db, tarefaEditada)
 
