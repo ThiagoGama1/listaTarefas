@@ -1,11 +1,48 @@
-O projeto é uma aplicação fullstack desenvolvida em Go (Golang) com banco de dados PostgreSQL. para gerenciamento de tarefas
+# listaTarefas
 
-Não é necessário ter nada instalado para o funcionamento da aplicação.
+Aplicação fullstack de gerenciamento de tarefas, desenvolvida com **Go (Golang)** no backend e **JavaScript puro** no frontend.
 
-Utilizei Docker para garantir que a aplicação seja utilizada em qualquer máquina
+## 🚀 Tecnologias
 
-Utilizei o Gin por familiaridade minha com a linguagem, e por ser uma linguagem leve. Quanto ao BD, usei pgx para Postgre. Implementei validações de segurança ao longo do código, rejeitando dados inválidos e garantindo a integridade do banco.
+- **Backend:** Go, Gin, pgx (PostgreSQL)
+- **Banco de dados:** PostgreSQL
+- **Frontend:** JavaScript, Bootstrap
+- **Infraestrutura:** Docker, Docker Compose
 
-Para o frontend eu usei javascript puro e bootstrap para deixar o projeto leve e otimizar o tempo de produção
+## 📁 Estrutura do projeto
 
-Gerei uma estrutura de pastas com tipos de arquivos, seguindo boas práticas
+```
+listaTarefas/
+├── assets/js/     # Frontend (JavaScript puro)
+├── cmd/           # Ponto de entrada da aplicação
+├── data/          # Configuração e conexão com banco
+├── handler/       # Handlers HTTP (rotas)
+├── models/        # Estruturas de dados
+├── templates/     # Templates HTML
+├── Dockerfile
+├── docker-compose.yml
+└── go.mod
+```
+
+## ⚙️ Como rodar
+
+Não é necessário ter Go ou PostgreSQL instalados. Basta ter o **Docker** e o **Docker Compose**.
+
+```bash
+# Clone o repositório
+git clone https://github.com/ThiagoGama1/listaTarefas.git
+cd listaTarefas
+
+# Suba a aplicação
+docker-compose up
+```
+
+A aplicação estará disponível em `http://localhost:8080`
+
+## 💡 Decisões técnicas
+
+- **Gin** foi escolhido pela leveza e familiaridade com a linguagem
+- **pgx** para comunicação eficiente com o PostgreSQL
+- **Docker** garante que a aplicação rode em qualquer máquina sem configuração manual
+- Validações de segurança implementadas nos handlers para rejeitar dados inválidos
+- Frontend em JS puro para manter o projeto leve, sem dependências de framework
