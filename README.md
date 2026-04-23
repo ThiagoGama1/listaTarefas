@@ -1,48 +1,41 @@
 # listaTarefas
 
-Aplicação fullstack de gerenciamento de tarefas, desenvolvida com **Go (Golang)** no backend e **JavaScript puro** no frontend.
+Projeto fullstack de lista de tarefas feito em Go. Desenvolvi pra praticar a construção de uma API do zero com banco de dados real e subir tudo via Docker.
 
-## 🚀 Tecnologias
+## Stack
 
-- **Backend:** Go, Gin, pgx (PostgreSQL)
-- **Banco de dados:** PostgreSQL
-- **Frontend:** JavaScript, Bootstrap
-- **Infraestrutura:** Docker, Docker Compose
+- Go + Gin no backend
+- PostgreSQL como banco (usando pgx)
+- JavaScript puro e Bootstrap no frontend
+- Docker e Docker Compose pra rodar tudo junto
 
-## 📁 Estrutura do projeto
+## Estrutura
 
 ```
 listaTarefas/
-├── assets/js/     # Frontend (JavaScript puro)
-├── cmd/           # Ponto de entrada da aplicação
-├── data/          # Configuração e conexão com banco
-├── handler/       # Handlers HTTP (rotas)
-├── models/        # Estruturas de dados
-├── templates/     # Templates HTML
+├── assets/js/     # frontend
+├── cmd/           # ponto de entrada
+├── data/          # conexão com o banco
+├── handler/       # handlers das rotas
+├── models/        # structs
+├── templates/     # HTML
 ├── Dockerfile
 ├── docker-compose.yml
 └── go.mod
 ```
 
-## ⚙️ Como rodar
+## Como rodar
 
-Não é necessário ter Go ou PostgreSQL instalados. Basta ter o **Docker** e o **Docker Compose**.
+Precisa ter Docker instalado. Não precisa instalar Go nem PostgreSQL na máquina.
 
 ```bash
-# Clone o repositório
 git clone https://github.com/ThiagoGama1/listaTarefas.git
 cd listaTarefas
-
-# Suba a aplicação
 docker-compose up
 ```
 
-A aplicação estará disponível em `http://localhost:8080`
+Acessa em `http://localhost:8080`
 
-## 💡 Decisões técnicas
+## Por que essas escolhas
 
-- **Gin** foi escolhido pela leveza e familiaridade com a linguagem
-- **pgx** para comunicação eficiente com o PostgreSQL
-- **Docker** garante que a aplicação rode em qualquer máquina sem configuração manual
-- Validações de segurança implementadas nos handlers para rejeitar dados inválidos
-- Frontend em JS puro para manter o projeto leve, sem dependências de framework
+Usei Gin por ser leve e já ter alguma familiaridade. O pgx lida bem com PostgreSQL em Go. Coloquei validações nos handlers pra não deixar dados ruins entrarem no banco. Frontend simples de propósito — não queria adicionar complexidade onde não era necessário.
