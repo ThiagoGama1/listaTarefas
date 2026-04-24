@@ -1,41 +1,51 @@
 # listaTarefas
 
-Projeto fullstack de lista de tarefas feito em Go. Desenvolvi pra praticar a construção de uma API do zero com banco de dados real e subir tudo via Docker.
+Aplicação fullstack de gerenciamento de tarefas com API REST em Go, banco de dados PostgreSQL e containerização completa via Docker. O projeto permite criar, visualizar, editar, reordenar e excluir tarefas, com validações no backend para garantir a integridade dos dados.
 
-## Stack
+---
 
-- Go + Gin no backend
-- PostgreSQL como banco (usando pgx)
-- JavaScript puro e Bootstrap no frontend
-- Docker e Docker Compose pra rodar tudo junto
+## Stack técnica
 
-## Estrutura
+| Camada | Tecnologia |
+|---|---|
+| Backend | Go + Gin |
+| Banco de dados | PostgreSQL (driver pgx) |
+| Frontend | JavaScript puro + Bootstrap |
+| Containerização | Docker + Docker Compose |
+
+---
+
+## Arquitetura
+
+O projeto segue uma estrutura em camadas com responsabilidades bem separadas:
 
 ```
 listaTarefas/
-├── assets/js/     # frontend
-├── cmd/           # ponto de entrada
-├── data/          # conexão com o banco
-├── handler/       # handlers das rotas
-├── models/        # structs
-├── templates/     # HTML
+├── cmd/            # Ponto de entrada da aplicação (main.go)
+├── data/           # Conexão e queries ao banco de dados (PostgreSQL via pgx)
+├── handler/        # Handlers HTTP das rotas (lógica de negócio e validações)
+├── models/         # Structs de domínio (Tarefa: id, nome, custo, data_limite, ordem)
+├── templates/      # Templates HTML servidos pelo backend
+├── assets/js/      # JavaScript do frontend (requisições à API, manipulação do DOM)
 ├── Dockerfile
 ├── docker-compose.yml
 └── go.mod
 ```
 
-## Como rodar
-
-Precisa ter Docker instalado. Não precisa instalar Go nem PostgreSQL na máquina.
-
-```bash
-git clone https://github.com/ThiagoGama1/listaTarefas.git
-cd listaTarefas
-docker-compose up
+**Modelo de dados — Tarefa:**
+```go
+type Tarefa struct {
+    Id                int       `json:"id"`
+    Nome              string    `json:"nome"`
+    Custo             float64   `json:"custo"`
+    DataLimite        time.Time `json:"data_limite"`
+    OrdemApresentacao int       `json:"ordem_apresentacao"`
+}
 ```
 
-Acessa em `http://localhost:8080`
+---
 
-## Por que essas escolhas
+## Funcionalidades
 
-Usei Gin por ser leve e já ter alguma familiaridade. O pgx lida bem com PostgreSQL em Go. Coloquei validações nos handlers pra não deixar dados ruins entrarem no banco. Frontend simples de propósito — não queria adicionar complexidade onde não era necessário.
+- Listagem de tarefas ordenadas por `ordem_apresentacao`
+- - Cadastro de nova t
